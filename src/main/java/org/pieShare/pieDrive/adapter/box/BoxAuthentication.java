@@ -12,15 +12,6 @@ import com.box.sdk.BoxAPIConnection;
  * @author richy
  */
 public class BoxAuthentication {
-
-    private static final String CLIENT_ID = "51k2ejwc1wo8gntvcqf5s1p1fnw7fgk5";
-    private static final String CLIENT_SECRET = "o8OPR4N8Rdb8PIbeKAQ8MvaPg5PKT8pc";
-    private static final String USER_ID = "256114953";
-    private static final String PUBLIC_KEY_ID = "4jrket0u";
-    private static final String PRIVATE_KEY_FILE = "ssh/box_private_key.pem";
-    private static final String PRIVATE_KEY_PASSWORD = "1234";
-    private static final int MAX_DEPTH = 1;
-
     public BoxAPIConnection authenticate() {
         BoxAPIConnection api = new BoxAPIConnection("b69031JnSd1PRaLs4JH9nR66k4uuqFzl");
         return api;
