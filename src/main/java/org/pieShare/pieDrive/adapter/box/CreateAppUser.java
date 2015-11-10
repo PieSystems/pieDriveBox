@@ -28,7 +28,7 @@ public class CreateAppUser {
     private static final String PRIVATE_KEY_PASSWORD = "1234";
     private static final String ENTERPRISE_ID = "769989";
     private static final String PRIVATE_KEY_FILE = "ssh/box_private_key.pem";
-    private static final String APP_USER_NAME = "TestUser1";
+    private static final String APP_USER_NAME = "AIC_User";
 
     public CreateAppUser() {
     }
