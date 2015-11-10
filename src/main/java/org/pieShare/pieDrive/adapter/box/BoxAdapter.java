@@ -42,7 +42,8 @@ public class BoxAdapter implements Adaptor {
 
     @Override
     public void delte(PieDriveFile file) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        BoxFile boxFile = new BoxFile(api, file.getUuid());
+        boxFile.delete();
     }
 
     @Override
