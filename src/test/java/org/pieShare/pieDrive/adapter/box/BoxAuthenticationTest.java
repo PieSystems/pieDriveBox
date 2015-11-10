@@ -24,22 +24,18 @@ public class BoxAuthenticationTest {
     @Autowired
     private BoxAuthentication boxAuthentication;
 
-    @Autowired
-    private CreateAppUser createAppUser;
-
     public BoxAuthenticationTest() {
     }
 
     @Test
     public void create() {
-        createAppUser.create();
+       // createAppUser.create();
     }
 
     @Test
     public void testAuthenticate() {
 
-        boxAuthentication.Authenticate();
-
+       // boxAuthentication.Authenticate();a
     }
 
 }
