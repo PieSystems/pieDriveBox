@@ -9,12 +9,14 @@ import com.box.sdk.BoxAPIConnection;
 import com.box.sdk.BoxFile;
 import com.box.sdk.BoxFile.Info;
 import com.box.sdk.BoxFolder;
+import com.box.sdk.BoxItem;
 import com.box.sdk.ProgressListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -41,18 +43,15 @@ public class BoxAdapter implements Adaptor {
     }
 
     @Override
-    public void delte(PieDriveFile file) {
-        BoxFile boxFile = new BoxFile(api, file.getUuid());
+    public void delete(PieDriveFile file) {
+        BoxFile boxFile = findFileByName(file.getUuid());
         boxFile.delete();
     }
 
     @Override
-    public void upload(PieDriveFile file) {
-        InputStream stream;
+    public void upload(PieDriveFile file, InputStream stream) {
         try {
-            stream = file.getFileData();
-
-            getRootFolder().uploadFile(stream, file.getUuid());
+            Info info = getRootFolder().uploadFile(stream, file.getUuid());
             stream.close();
         } catch (FileNotFoundException ex) {
             //ToDo: Handle Error.
@@ -62,18 +61,14 @@ public class BoxAdapter implements Adaptor {
     }
 
     @Override
-    public void download(PieDriveFile file) {
-        BoxFile boxFile = new BoxFile(api, file.getUuid());
-        BoxFile.Info info = boxFile.getInfo();
+    public void download(PieDriveFile file, OutputStream stream) {
+        BoxFile boxFile = findFileByName(file.getUuid());
 
         ProgressListener p = (long numBytes, long totalBytes) -> {
             double percentComplete = numBytes / totalBytes;
         };
 
-        FileOutputStream stream;
         try {
-            stream = new FileOutputStream(info.getName());
-
             if (showProgress) {
                 boxFile.download(stream, p);
             } else {
@@ -89,13 +84,24 @@ public class BoxAdapter implements Adaptor {
         }
     }
 
-    public Info getFileinfo(PieDriveFile file) {
+    public Info getFileInfo(PieDriveFile file) {
         BoxFile boxFile = new BoxFile(api, file.getUuid());
         return boxFile.getInfo();
     }
 
     public BoxFolder getRootFolder() {
         return BoxFolder.getRootFolder(api);
+    }
+    
+    public BoxFile findFileByName(String name)
+    {
+        for(BoxItem.Info file : getRootFolder().getChildren())
+        {
+            if(file.getName().equals(name))
+                return new BoxFile(api, file.getID());
+        }
+        //ToDo: Think about ... may an exception
+        return null;
     }
 
 }

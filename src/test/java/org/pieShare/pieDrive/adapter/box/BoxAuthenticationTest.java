@@ -5,17 +5,17 @@
  */
 package org.pieShare.pieDrive.adapter.box;
 
-import java.io.ByteArrayOutputStream;
+import com.box.sdk.BoxFile;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import junit.framework.Assert;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.pieShare.pieDrive.adapter.box.configuration.BoxAdapterConfig;
 import org.pieShare.pieDrive.adapter.model.PieDriveFile;
@@ -38,17 +38,21 @@ public class BoxAuthenticationTest {
     }
 
     @Test
-    public void testUpload() {
+    public void testUploadDownloadDelete() {
 
         UUID uid = UUID.randomUUID();
         File testFile = new File(uid.toString());
-        
-        if(testFile.exists()) testFile.delete();
-        
+
+        if (testFile.exists()) {
+            testFile.delete();
+        }
+
+        byte[] content = "This is a test content".getBytes();
+
         FileOutputStream ff;
         try {
             ff = new FileOutputStream(testFile);
-            ff.write("This is a test content".getBytes());
+            ff.write(content);
             ff.close();
         } catch (FileNotFoundException ex) {
             Assert.fail(ex.getMessage());
@@ -59,23 +63,44 @@ public class BoxAuthenticationTest {
         PieDriveFile file = new PieDriveFile();
 
         file.setUuid(uid.toString());
+
+        FileInputStream st = null;
+        try {
+            st = new FileInputStream(testFile);
+        } catch (FileNotFoundException ex) {
+            Assert.fail();
+        }
+
+        boxAdapter.upload(file, st);
+
+        File donwloadedFile = new File("downloaded" + file.getUuid());
+
+        try {
+            boxAdapter.download(file, new FileOutputStream(donwloadedFile));
+        } catch (FileNotFoundException ex) {
+            Assert.fail();
+        }
+
+        byte[] data1 = null;
+        try {
+            data1 = Files.readAllBytes(donwloadedFile.toPath());
+        } catch (IOException ex) {
+            Assert.fail();
+        }
+
+        Arrays.equals(content, data1);
         
-        boxAdapter.upload(file);
+        donwloadedFile.delete();
         testFile.delete();
-        try
-        {
-        boxAdapter.getFileinfo(file);
-        
-        boxAdapter.delte(file);
-        
-        
-            boxAdapter.getFileinfo(file);
-            Assert.fail("Should be deleted");
-        }
-        catch(Exception ex)
-        {
-            String a  = "";
-        }
+
+        BoxFile boxFile1 = boxAdapter.findFileByName(file.getUuid());
+        Assert.assertNotNull(boxFile1);
+
+        boxAdapter.delete(file);
+
+        BoxFile boxFile2 = boxAdapter.findFileByName(file.getUuid());
+        Assert.assertNull(boxFile2);
+
     }
 
 }
