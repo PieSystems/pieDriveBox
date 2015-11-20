@@ -5,6 +5,7 @@
  */
 package org.pieShare.pieDrive.adapter.box.configuration;
 
+import org.pieShare.pieDrive.adapter.box.BoxAdapter;
 import org.pieShare.pieDrive.adapter.box.BoxAuthentication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,10 +16,14 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class BoxAdapterConfig {
-    
+
     @Bean
-    public BoxAuthentication boxAuthentication()
-    {
+    public BoxAuthentication boxAuthentication() {
         return new BoxAuthentication();
+    }
+
+    @Bean
+    public BoxAdapter boxAdapter() {
+        return new BoxAdapter();
     }
 }

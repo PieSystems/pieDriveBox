@@ -48,11 +48,6 @@ public class BoxAdapter implements Adaptor {
 
     @Override
     public void upload(PieDriveFile file) {
-        BoxFile boxFile = new BoxFile(api, file.getUuid());
-        BoxFile.Info info = boxFile.new Info();
-        info.setName(file.getUuid());
-        boxFile.updateInfo(info);
-
         InputStream stream;
         try {
             stream = file.getFileData();
@@ -94,7 +89,7 @@ public class BoxAdapter implements Adaptor {
         }
     }
 
-    private Info getFileinfo(PieDriveFile file) {
+    public Info getFileinfo(PieDriveFile file) {
         BoxFile boxFile = new BoxFile(api, file.getUuid());
         return boxFile.getInfo();
     }

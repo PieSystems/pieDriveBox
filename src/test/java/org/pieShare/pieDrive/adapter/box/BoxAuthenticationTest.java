@@ -5,10 +5,20 @@
  */
 package org.pieShare.pieDrive.adapter.box;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import junit.framework.Assert;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.pieShare.pieDrive.adapter.box.configuration.BoxAdapterConfig;
+import org.pieShare.pieDrive.adapter.model.PieDriveFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -22,20 +32,50 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class BoxAuthenticationTest {
 
     @Autowired
-    private BoxAuthentication boxAuthentication;
+    private BoxAdapter boxAdapter;
 
     public BoxAuthenticationTest() {
     }
 
     @Test
-    public void create() {
-       // createAppUser.create();
-    }
+    public void testUpload() {
 
-    @Test
-    public void testAuthenticate() {
+        UUID uid = UUID.randomUUID();
+        File testFile = new File(uid.toString());
+        
+        if(testFile.exists()) testFile.delete();
+        
+        FileOutputStream ff;
+        try {
+            ff = new FileOutputStream(testFile);
+            ff.write("This is a test content".getBytes());
+            ff.close();
+        } catch (FileNotFoundException ex) {
+            Assert.fail(ex.getMessage());
+        } catch (IOException ex) {
+            Assert.fail(ex.getMessage());
+        }
 
-       // boxAuthentication.Authenticate();a
+        PieDriveFile file = new PieDriveFile();
+
+        file.setUuid(uid.toString());
+        
+        boxAdapter.upload(file);
+        testFile.delete();
+        try
+        {
+        boxAdapter.getFileinfo(file);
+        
+        boxAdapter.delte(file);
+        
+        
+            boxAdapter.getFileinfo(file);
+            Assert.fail("Should be deleted");
+        }
+        catch(Exception ex)
+        {
+            String a  = "";
+        }
     }
 
 }
