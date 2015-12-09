@@ -14,10 +14,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.pieShare.pieDrive.adapter.box.configuration.BoxAdapterConfig;
+import org.pieShare.pieDrive.adapter.exceptions.AdaptorException;
 import org.pieShare.pieDrive.adapter.model.PieDriveFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -71,12 +74,20 @@ public class BoxAuthenticationTest {
             Assert.fail();
         }
 
-        boxAdapter.upload(file, st);
+        try {
+            boxAdapter.upload(file, st);
+        } catch (AdaptorException ex) {
+            Assert.fail();
+        }
 
         File donwloadedFile = new File("downloaded" + file.getUuid());
 
         try {
-            boxAdapter.download(file, new FileOutputStream(donwloadedFile));
+            try {
+                boxAdapter.download(file, new FileOutputStream(donwloadedFile));
+            } catch (AdaptorException ex) {
+                Assert.fail();
+            }
         } catch (FileNotFoundException ex) {
             Assert.fail();
         }
@@ -96,7 +107,11 @@ public class BoxAuthenticationTest {
         BoxFile boxFile1 = boxAdapter.findFileByName(file.getUuid());
         Assert.assertNotNull(boxFile1);
 
-        boxAdapter.delete(file);
+        try {
+            boxAdapter.delete(file);
+        } catch (AdaptorException ex) {
+           Assert.fail();
+        }
 
         BoxFile boxFile2 = boxAdapter.findFileByName(file.getUuid());
         Assert.assertNull(boxFile2);

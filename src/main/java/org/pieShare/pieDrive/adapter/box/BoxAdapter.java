@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
 import org.pieShare.pieDrive.adapter.api.Adaptor;
+import org.pieShare.pieDrive.adapter.exceptions.AdaptorException;
 import org.pieShare.pieDrive.adapter.model.PieDriveFile;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -43,13 +44,13 @@ public class BoxAdapter implements Adaptor {
     }
 
     @Override
-    public void delete(PieDriveFile file) {
+    public void delete(PieDriveFile file) throws AdaptorException {
         BoxFile boxFile = findFileByName(file.getUuid());
         boxFile.delete();
     }
 
     @Override
-    public void upload(PieDriveFile file, InputStream stream) {
+    public void upload(PieDriveFile file, InputStream stream) throws AdaptorException{
         try {
             Info info = getRootFolder().uploadFile(stream, file.getUuid());
             stream.close();
@@ -61,7 +62,7 @@ public class BoxAdapter implements Adaptor {
     }
 
     @Override
-    public void download(PieDriveFile file, OutputStream stream) {
+    public void download(PieDriveFile file, OutputStream stream) throws AdaptorException {
         BoxFile boxFile = findFileByName(file.getUuid());
 
         ProgressListener p = (long numBytes, long totalBytes) -> {
