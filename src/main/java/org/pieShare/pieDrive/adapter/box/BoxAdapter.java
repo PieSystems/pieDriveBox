@@ -19,6 +19,7 @@ import javax.annotation.PostConstruct;
 import org.pieShare.pieDrive.adapter.api.Adaptor;
 import org.pieShare.pieDrive.adapter.exceptions.AdaptorException;
 import org.pieShare.pieDrive.adapter.model.PieDriveFile;
+import org.pieShare.pieTools.pieUtilities.service.pieLogger.PieLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -42,6 +43,7 @@ public class BoxAdapter implements Adaptor {
     public synchronized void delete(PieDriveFile file) throws AdaptorException {
         BoxFile boxFile = findFileByName(file.getUuid());
         boxFile.delete();
+		PieLogger.trace(BoxAdapter.class, "{} deleted", file.getUuid());
     }
 
     @Override
@@ -49,6 +51,7 @@ public class BoxAdapter implements Adaptor {
         try {
             Info info = getRootFolder().uploadFile(stream, file.getUuid());
             stream.close();
+			PieLogger.trace(BoxAdapter.class, "{} uploaded", file.getUuid());
         } catch (FileNotFoundException ex) {
             throw new AdaptorException(ex);
         } catch (IOException ex) {
@@ -71,6 +74,7 @@ public class BoxAdapter implements Adaptor {
                 boxFile.download(stream);
             }
             stream.close();
+			PieLogger.trace(BoxAdapter.class, "{} downloaded", file.getUuid());
         } catch (FileNotFoundException ex) {
             throw new AdaptorException(ex);
         } catch (IOException ex) {
