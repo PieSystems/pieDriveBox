@@ -11,15 +11,10 @@ import com.box.sdk.BoxFile.Info;
 import com.box.sdk.BoxFolder;
 import com.box.sdk.BoxItem;
 import com.box.sdk.ProgressListener;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
 import org.pieShare.pieDrive.adapter.api.Adaptor;
 import org.pieShare.pieDrive.adapter.exceptions.AdaptorException;
@@ -55,9 +50,9 @@ public class BoxAdapter implements Adaptor {
             Info info = getRootFolder().uploadFile(stream, file.getUuid());
             stream.close();
         } catch (FileNotFoundException ex) {
-            //ToDo: Handle Error.
+            throw new AdaptorException(ex);
         } catch (IOException ex) {
-            //ToDo: Handle Error.
+            throw new AdaptorException(ex);
         }
     }
 
@@ -77,11 +72,9 @@ public class BoxAdapter implements Adaptor {
             }
             stream.close();
         } catch (FileNotFoundException ex) {
-            //ToDo: Handle error;
-            return;
+            throw new AdaptorException(ex);
         } catch (IOException ex) {
-            //ToDo: Handle error;
-            return;
+             throw new AdaptorException(ex);
         }
     }
 
@@ -101,7 +94,7 @@ public class BoxAdapter implements Adaptor {
             if(file.getName().equals(name))
                 return new BoxFile(api, file.getID());
         }
-        //ToDo: Think about ... may an exception
+        //ToDo: Think about ... maybe an exception
         return null;
     }
 
