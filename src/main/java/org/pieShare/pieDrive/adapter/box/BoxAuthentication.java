@@ -13,7 +13,7 @@ import com.box.sdk.BoxAPIConnection;
  */
 public class BoxAuthentication {
     public BoxAPIConnection authenticate() {
-        BoxAPIConnection api = new BoxAPIConnection("pl5Irssdb14C8CiPJ7oCBUk0E0kZ4lf1");
+        BoxAPIConnection api = new BoxAPIConnection("6JezAcNqiPQD7uGvj0n4BXCXOqtDgoAv");
         return api;
         /*
         

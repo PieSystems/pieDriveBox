@@ -39,13 +39,13 @@ public class BoxAdapter implements Adaptor {
     }
 
     @Override
-    public void delete(PieDriveFile file) throws AdaptorException {
+    public synchronized void delete(PieDriveFile file) throws AdaptorException {
         BoxFile boxFile = findFileByName(file.getUuid());
         boxFile.delete();
     }
 
     @Override
-    public void upload(PieDriveFile file, InputStream stream) throws AdaptorException{
+    public synchronized void upload(PieDriveFile file, InputStream stream) throws AdaptorException{
         try {
             Info info = getRootFolder().uploadFile(stream, file.getUuid());
             stream.close();
@@ -57,7 +57,7 @@ public class BoxAdapter implements Adaptor {
     }
 
     @Override
-    public void download(PieDriveFile file, OutputStream stream) throws AdaptorException {
+    public synchronized void download(PieDriveFile file, OutputStream stream) throws AdaptorException {
         BoxFile boxFile = findFileByName(file.getUuid());
 
         ProgressListener p = (long numBytes, long totalBytes) -> {
