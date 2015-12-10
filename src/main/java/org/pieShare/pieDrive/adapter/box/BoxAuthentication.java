@@ -6,14 +6,6 @@
 package org.pieShare.pieDrive.adapter.box;
 
 import com.box.sdk.BoxAPIConnection;
-import com.box.sdk.BoxDeveloperEditionAPIConnection;
-import com.box.sdk.EncryptionAlgorithm;
-import com.box.sdk.JWTEncryptionPreferences;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -31,8 +23,9 @@ public class BoxAuthentication {
     private static final String PRIVATE_KEY_PASSWORD = "1234";
 
     public BoxAPIConnection authenticate() {
-        //BoxAPIConnection api = new BoxAPIConnection("Jbc6CSSaxcbYnKUMk3imgk7RJVpmh5g4");
-
+        
+		BoxAPIConnection api = new BoxAPIConnection("Jbc6CSSaxcbYnKUMk3imgk7RJVpmh5g4");
+/*
         String privString = String.format("%s/.ssh/%s", System.getProperty("user.home"), PRIVATE_KEY_FILE);
         
         String privateKey = null;
@@ -50,7 +43,7 @@ public class BoxAuthentication {
 
         BoxDeveloperEditionAPIConnection api = BoxDeveloperEditionAPIConnection.getAppUserConnection(USER_ID, CLIENT_ID,
                 CLIENT_SECRET, encryptionPref);
-
+*/
         return api;
     }
 

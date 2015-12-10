@@ -30,29 +30,17 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  * @author richy
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = BoxAdapterConfig.class)
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(classes = BoxAdapterConfig.class)
 public class BoxAuthenticationTest {
 
     @Autowired
     private BoxAdapter boxAdapter;
-
-    @Autowired
-    private CreateAppUser createAppUser;
     
     public BoxAuthenticationTest() {
     }
-
-   
-    public void Create()
-    {
-        try {
-            createAppUser.create();
-        } catch (IOException ex) {
-           String error = ";";
-        }
-    }
-     @Test
+	
+    //@Test
     public void testUploadDownloadDelete() {
 
         UUID uid = UUID.randomUUID();
