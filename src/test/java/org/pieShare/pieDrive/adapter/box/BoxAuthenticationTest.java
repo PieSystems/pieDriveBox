@@ -52,7 +52,7 @@ public class BoxAuthenticationTest {
            String error = ";";
         }
     }
-    
+     @Test
     public void testUploadDownloadDelete() {
 
         UUID uid = UUID.randomUUID();
