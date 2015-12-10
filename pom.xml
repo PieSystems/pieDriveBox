@@ -19,8 +19,9 @@
             <groupId>com.box</groupId>
             <artifactId>box-java-sdk</artifactId>
             <version>1.2.0-SNAPSHOT</version>
-            <scope>system</scope>
+            <!--<scope>system</scope>
             <systemPath>${project.basedir}/libs/box-java-sdk-1.2.0-SNAPSHOT.jar</systemPath>
+             <systemPath>${project.basedir}/libs/box-java-sdk-all-1.2.0-SNAPSHOT.jar</systemPath>-->
         </dependency>
         
         <dependency>

@@ -23,7 +23,7 @@ public final class CreateAppUser {
     private static final String ENTERPRISE_ID = "776293";
     private static final String PUBLIC_KEY_ID = "a3gs5sfd";
     private static final String PRIVATE_KEY_FILE = "box_private_key.pem";
-    private static final String PRIVATE_KEY_PASSWORD = "";
+    private static final String PRIVATE_KEY_PASSWORD = "1234";
     private static final String APP_USER_NAME = "AIC_User1";
 
     public CreateAppUser() {
