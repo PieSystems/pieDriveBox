@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,14 +30,29 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  * @author richy
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = BoxAdapterConfig.class)
 public class BoxAuthenticationTest {
 
     @Autowired
     private BoxAdapter boxAdapter;
 
+    @Autowired
+    private CreateAppUser createAppUser;
+    
     public BoxAuthenticationTest() {
     }
 
+    @Test
+    public void Create()
+    {
+        try {
+            createAppUser.create();
+        } catch (IOException ex) {
+           String error = ";";
+        }
+    }
+    
     public void testUploadDownloadDelete() {
 
         UUID uid = UUID.randomUUID();
