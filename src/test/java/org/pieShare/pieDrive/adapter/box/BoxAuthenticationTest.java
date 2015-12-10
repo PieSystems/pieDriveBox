@@ -39,8 +39,8 @@ public class BoxAuthenticationTest {
     
     public BoxAuthenticationTest() {
     }
-	
-    //@Test
+
+	//@Test
     public void testUploadDownloadDelete() {
 
         UUID uid = UUID.randomUUID();
