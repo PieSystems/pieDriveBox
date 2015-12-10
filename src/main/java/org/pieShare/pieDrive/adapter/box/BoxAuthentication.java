@@ -24,7 +24,7 @@ public class BoxAuthentication {
 
     public BoxAPIConnection authenticate() {
         
-		BoxAPIConnection api = new BoxAPIConnection("Jbc6CSSaxcbYnKUMk3imgk7RJVpmh5g4");
+		BoxAPIConnection api = new BoxAPIConnection("gvutNZ4aGGZhL0hOi69XM1C1fwas85ih");
 /*
         String privString = String.format("%s/.ssh/%s", System.getProperty("user.home"), PRIVATE_KEY_FILE);
         
