@@ -36,18 +36,34 @@ public class BoxAdapter implements Adaptor {
     @PostConstruct
     public void Init() {
         showProgress = false;
-        api = boxAuthentication.authenticate();
     }
 
+	private BoxAPIConnection getConnection() throws AdaptorException {
+		try{
+			return boxAuthentication.authenticate();
+		}catch (Exception e){
+			throw new AdaptorException(e);
+		}
+	}
+	
     @Override
     public synchronized void delete(PieDriveFile file) throws AdaptorException {
-        BoxFile boxFile = findFileByName(file.getUuid());
-        boxFile.delete();
-		PieLogger.trace(BoxAdapter.class, "{} deleted", file.getUuid());
+		api = getConnection();
+		
+		try {
+			BoxFile boxFile = findFileByName(file.getUuid());
+			boxFile.delete();
+			PieLogger.trace(BoxAdapter.class, "{} deleted", file.getUuid());
+		} catch (Exception e) {
+			//because we can't be sure that no other exceptions will be thrown (fuck box)
+			throw new AdaptorException(e);
+		}
     }
 
     @Override
     public synchronized void upload(PieDriveFile file, InputStream stream) throws AdaptorException{
+		api = getConnection();
+		
         try {
             Info info = getRootFolder().uploadFile(stream, file.getUuid());
             stream.close();
@@ -56,11 +72,16 @@ public class BoxAdapter implements Adaptor {
             throw new AdaptorException(ex);
         } catch (IOException ex) {
             throw new AdaptorException(ex);
-        }
+        } catch (Exception e) {
+			//because we can't be sure that no other exceptions will be thrown (fuck box)
+			throw new AdaptorException(e);
+		}
     }
 
     @Override
     public synchronized void download(PieDriveFile file, OutputStream stream) throws AdaptorException {
+		api = getConnection();
+		
         BoxFile boxFile = findFileByName(file.getUuid());
 
         ProgressListener p = (long numBytes, long totalBytes) -> {
@@ -79,7 +100,10 @@ public class BoxAdapter implements Adaptor {
             throw new AdaptorException(ex);
         } catch (IOException ex) {
              throw new AdaptorException(ex);
-        }
+        } catch (Exception e) {
+			//because we can't be sure that no other exceptions will be thrown (fuck box)
+			throw new AdaptorException(e);
+		}
     }
 
     public Info getFileInfo(PieDriveFile file) {

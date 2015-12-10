@@ -7,6 +7,7 @@ package org.pieShare.pieDrive.adapter.box.configuration;
 
 import org.pieShare.pieDrive.adapter.box.BoxAdapter;
 import org.pieShare.pieDrive.adapter.box.BoxAuthentication;
+import org.pieShare.pieDrive.adapter.box.CreateAppUser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,5 +26,11 @@ public class BoxAdapterConfig {
     @Bean
     public BoxAdapter boxAdapter() {
         return new BoxAdapter();
+    }
+    
+    @Bean
+    public CreateAppUser createAppUser()
+    {
+        return new CreateAppUser();
     }
 }
