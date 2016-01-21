@@ -12,6 +12,8 @@ import com.box.sdk.JWTEncryptionPreferences;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.pieShare.pieTools.pieUtilities.service.pieLogger.PieLogger;
 
 /**
@@ -28,7 +30,7 @@ public class BoxAuthentication {
     private static final String PUBLIC_KEY_ID = "l6rj58un";//"a3gs5sfd";
     private static final String PRIVATE_KEY_FILE = "AIC_BOX_Privkey.pem";
     private static final String PRIVATE_KEY_PASSWORD = "foobar";//1234";
-    private BoxDeveloperEditionAPIConnection api = null;
+    private static BoxDeveloperEditionAPIConnection api = null;
 
     public BoxAPIConnection authenticate() {
 
@@ -51,7 +53,7 @@ public class BoxAuthentication {
         encryptionPref.setPrivateKeyPassword(PRIVATE_KEY_PASSWORD);
         encryptionPref.setEncryptionAlgorithm(EncryptionAlgorithm.RSA_SHA_256);
 
-        BoxDeveloperEditionAPIConnection api = BoxDeveloperEditionAPIConnection.getAppUserConnection(USER_ID, CLIENT_ID,
+        api = BoxDeveloperEditionAPIConnection.getAppUserConnection(USER_ID, CLIENT_ID,
                 CLIENT_SECRET, encryptionPref);
 
         return api;
