@@ -6,6 +6,13 @@
 package org.pieShare.pieDrive.adapter.box;
 
 import com.box.sdk.BoxAPIConnection;
+import com.box.sdk.BoxDeveloperEditionAPIConnection;
+import com.box.sdk.EncryptionAlgorithm;
+import com.box.sdk.JWTEncryptionPreferences;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import org.pieShare.pieTools.pieUtilities.service.pieLogger.PieLogger;
 
 /**
  *
@@ -18,32 +25,32 @@ public class BoxAuthentication {
 
     private static final String CLIENT_ID = "bryxc5clldhd2q8d7gns5vo0iha4prx5";
     private static final String CLIENT_SECRET = "BrwCVQU7OwRZ5JK8HuTuUc2WEYLLjhLd";
-    private static final String PUBLIC_KEY_ID = "a3gs5sfd";
-    private static final String PRIVATE_KEY_FILE = "box_private_key.pem";
-    private static final String PRIVATE_KEY_PASSWORD = "1234";
+    private static final String PUBLIC_KEY_ID = "l6rj58un";//"a3gs5sfd";
+    private static final String PRIVATE_KEY_FILE = "privkey.pem";
+    private static final String PRIVATE_KEY_PASSWORD = "foobar";//1234";
 
     public BoxAPIConnection authenticate() {
-        
-		BoxAPIConnection api = new BoxAPIConnection("TzEyYLq9eiERs8KfPIXouWWx1JO2oQWy");
-/*
+
+        //BoxAPIConnection api = new BoxAPIConnection("TzEyYLq9eiERs8KfPIXouWWx1JO2oQWy");
         String privString = String.format("%s/.ssh/%s", System.getProperty("user.home"), PRIVATE_KEY_FILE);
-        
+
         String privateKey = null;
         try {
             privateKey = new String(Files.readAllBytes(Paths.get(privString)));
         } catch (IOException ex) {
-            Logger.getLogger(BoxAuthentication.class.getName()).log(Level.SEVERE, null, ex);
+            PieLogger.error(this.getClass(), "Error", ex);
         }
 
-        JWTEncryptionPreferences encryptionPref = new JWTEncryptionPreferences();
+         JWTEncryptionPreferences encryptionPref = new JWTEncryptionPreferences();
         encryptionPref.setPublicKeyID(PUBLIC_KEY_ID);
         encryptionPref.setPrivateKey(privateKey);
         encryptionPref.setPrivateKeyPassword(PRIVATE_KEY_PASSWORD);
         encryptionPref.setEncryptionAlgorithm(EncryptionAlgorithm.RSA_SHA_256);
 
+
         BoxDeveloperEditionAPIConnection api = BoxDeveloperEditionAPIConnection.getAppUserConnection(USER_ID, CLIENT_ID,
                 CLIENT_SECRET, encryptionPref);
-*/
+
         return api;
     }
 

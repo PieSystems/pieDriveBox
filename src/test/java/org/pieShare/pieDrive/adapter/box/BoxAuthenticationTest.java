@@ -30,8 +30,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  * @author richy
  */
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(classes = BoxAdapterConfig.class)
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = BoxAdapterConfig.class)
 public class BoxAuthenticationTest {
 
     @Autowired
@@ -40,7 +40,7 @@ public class BoxAuthenticationTest {
     public BoxAuthenticationTest() {
     }
 
-	//@Test
+    @Test
     public void testUploadDownloadDelete() {
 
         UUID uid = UUID.randomUUID();
