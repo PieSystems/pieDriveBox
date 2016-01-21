@@ -41,7 +41,7 @@ public class BoxAuthenticationTest {
     }
 
     @Test
-    public void testUploadDownloadDelete() {
+    public void testUploadDownloadDelete() throws AdaptorException {
 
         UUID uid = UUID.randomUUID();
         File testFile = new File(uid.toString());

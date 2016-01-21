@@ -30,13 +30,14 @@ public class BoxAuthentication {
     private static final String PUBLIC_KEY_ID = "l6rj58un";//"a3gs5sfd";
     private static final String PRIVATE_KEY_FILE = "AIC_BOX_Privkey.pem";
     private static final String PRIVATE_KEY_PASSWORD = "foobar";//1234";
-    private static BoxDeveloperEditionAPIConnection api = null;
+    private static BoxAPIConnection api = null;
 
-    public BoxAPIConnection authenticate() {
+    public BoxAPIConnection getConnection() {
+        return api;
+    }
 
-        if(api != null)
-            return api;
-        
+    public BoxAPIConnection authenticate(String token) {
+
         //BoxAPIConnection api = new BoxAPIConnection("TzEyYLq9eiERs8KfPIXouWWx1JO2oQWy");
         String privString = String.format("%s/.ssh/%s", System.getProperty("user.home"), PRIVATE_KEY_FILE);
 
@@ -53,10 +54,16 @@ public class BoxAuthentication {
         encryptionPref.setPrivateKeyPassword(PRIVATE_KEY_PASSWORD);
         encryptionPref.setEncryptionAlgorithm(EncryptionAlgorithm.RSA_SHA_256);
 
-        api = BoxDeveloperEditionAPIConnection.getAppUserConnection(USER_ID, CLIENT_ID,
-                CLIENT_SECRET, encryptionPref);
-
+        //BoxDeveloperEditionAPIConnection api = BoxDeveloperEditionAPIConnection.getAppUserConnection(USER_ID, CLIENT_ID,
+        //         CLIENT_SECRET, encryptionPref);
+        api = new BoxAPIConnection(CLIENT_ID, CLIENT_SECRET, token);
         return api;
+        //https://app.box.com/api/oauth2/authorize?response_type=code&client_id=bryxc5clldhd2q8d7gns5vo0iha4prx5&redirect_uri=https://127.0.0.1&state=security_token%3DKnhMJatFipTAnM0nHlZA
+    }
+    
+    public String getURI()
+    {
+        return "https://app.box.com/api/oauth2/authorize?response_type=code&client_id=bryxc5clldhd2q8d7gns5vo0iha4prx5&redirect_uri=https://127.0.0.1&state=security_token%3DKnhMJatFipTAnM0nHlZA";
     }
 
 }
