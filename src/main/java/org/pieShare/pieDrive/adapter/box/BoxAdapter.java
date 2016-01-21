@@ -30,7 +30,6 @@ public class BoxAdapter implements Adaptor {
 
     @Autowired
     private BoxAuthentication boxAuthentication;
-    private BoxAPIConnection api;
     private boolean showProgress;
 
     @PostConstruct
@@ -38,50 +37,47 @@ public class BoxAdapter implements Adaptor {
         showProgress = false;
     }
 
-	private BoxAPIConnection getConnection() throws AdaptorException {
-		try{
-			return boxAuthentication.authenticate();
-		}catch (Exception e){
-			throw new AdaptorException(e);
-		}
-	}
-	
-    @Override
-    public synchronized void delete(PieDriveFile file) throws AdaptorException {
-		api = getConnection();
-		
-		try {
-			BoxFile boxFile = findFileByName(file.getUuid());
-			boxFile.delete();
-			PieLogger.trace(BoxAdapter.class, "{} deleted", file.getUuid());
-		} catch (Exception e) {
-			//because we can't be sure that no other exceptions will be thrown (fuck box)
-			throw new AdaptorException(e);
-		}
+    private BoxAPIConnection getConnection() throws AdaptorException {
+        BoxAPIConnection api = boxAuthentication.getConnection();
+        if (api == null) {
+            throw new AdaptorException("Not Logged in!");
+        }
+        return api;
     }
 
     @Override
-    public synchronized void upload(PieDriveFile file, InputStream stream) throws AdaptorException{
-		api = getConnection();
-		
+    public synchronized void delete(PieDriveFile file) throws AdaptorException {
+        BoxAPIConnection api = getConnection();
+
+        try {
+            BoxFile boxFile = findFileByName(file.getUuid());
+            boxFile.delete();
+            PieLogger.trace(BoxAdapter.class, "{} deleted", file.getUuid());
+        } catch (Exception e) {
+            //because we can't be sure that no other exceptions will be thrown (fuck box)
+            throw new AdaptorException(e);
+        }
+    }
+
+    @Override
+    public synchronized void upload(PieDriveFile file, InputStream stream) throws AdaptorException {
+        BoxAPIConnection api = getConnection();
+
         try {
             Info info = getRootFolder().uploadFile(stream, file.getUuid());
             stream.close();
-			PieLogger.trace(BoxAdapter.class, "{} uploaded", file.getUuid());
+            PieLogger.trace(BoxAdapter.class, "{} uploaded", file.getUuid());
         } catch (FileNotFoundException ex) {
             throw new AdaptorException(ex);
         } catch (IOException ex) {
             throw new AdaptorException(ex);
-        } catch (Exception e) {
-			//because we can't be sure that no other exceptions will be thrown (fuck box)
-			throw new AdaptorException(e);
-		}
+        }
     }
 
     @Override
     public synchronized void download(PieDriveFile file, OutputStream stream) throws AdaptorException {
-		api = getConnection();
-		
+        BoxAPIConnection api = getConnection();
+
         BoxFile boxFile = findFileByName(file.getUuid());
 
         ProgressListener p = (long numBytes, long totalBytes) -> {
@@ -95,32 +91,31 @@ public class BoxAdapter implements Adaptor {
                 boxFile.download(stream);
             }
             stream.close();
-			PieLogger.trace(BoxAdapter.class, "{} downloaded", file.getUuid());
+            PieLogger.trace(BoxAdapter.class, "{} downloaded", file.getUuid());
         } catch (FileNotFoundException ex) {
             throw new AdaptorException(ex);
         } catch (IOException ex) {
-             throw new AdaptorException(ex);
+            throw new AdaptorException(ex);
         } catch (Exception e) {
-			//because we can't be sure that no other exceptions will be thrown (fuck box)
-			throw new AdaptorException(e);
-		}
+            //because we can't be sure that no other exceptions will be thrown (fuck box)
+            throw new AdaptorException(e);
+        }
     }
 
-    public Info getFileInfo(PieDriveFile file) {
-        BoxFile boxFile = new BoxFile(api, file.getUuid());
+    public Info getFileInfo(PieDriveFile file) throws AdaptorException {
+        BoxFile boxFile = new BoxFile(getConnection(), file.getUuid());
         return boxFile.getInfo();
     }
 
-    public BoxFolder getRootFolder() {
-        return BoxFolder.getRootFolder(api);
+    public BoxFolder getRootFolder() throws AdaptorException {
+        return BoxFolder.getRootFolder(getConnection());
     }
-    
-    public BoxFile findFileByName(String name)
-    {
-        for(BoxItem.Info file : getRootFolder().getChildren())
-        {
-            if(file.getName().equals(name))
-                return new BoxFile(api, file.getID());
+
+    public BoxFile findFileByName(String name) throws AdaptorException {
+        for (BoxItem.Info file : getRootFolder().getChildren()) {
+            if (file.getName().equals(name)) {
+                return new BoxFile(getConnection(), file.getID());
+            }
         }
         //ToDo: Think about ... maybe an exception
         return null;
