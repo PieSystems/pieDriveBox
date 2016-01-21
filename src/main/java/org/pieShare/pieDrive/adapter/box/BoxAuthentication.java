@@ -26,7 +26,7 @@ public class BoxAuthentication {
     private static final String CLIENT_ID = "bryxc5clldhd2q8d7gns5vo0iha4prx5";
     private static final String CLIENT_SECRET = "BrwCVQU7OwRZ5JK8HuTuUc2WEYLLjhLd";
     private static final String PUBLIC_KEY_ID = "l6rj58un";//"a3gs5sfd";
-    private static final String PRIVATE_KEY_FILE = "privkey.pem";
+    private static final String PRIVATE_KEY_FILE = "AIC_BOX_Privkey.pem";
     private static final String PRIVATE_KEY_PASSWORD = "foobar";//1234";
 
     public BoxAPIConnection authenticate() {
