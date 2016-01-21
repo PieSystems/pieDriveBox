@@ -28,9 +28,13 @@ public class BoxAuthentication {
     private static final String PUBLIC_KEY_ID = "l6rj58un";//"a3gs5sfd";
     private static final String PRIVATE_KEY_FILE = "AIC_BOX_Privkey.pem";
     private static final String PRIVATE_KEY_PASSWORD = "foobar";//1234";
+    private BoxDeveloperEditionAPIConnection api = null;
 
     public BoxAPIConnection authenticate() {
 
+        if(api != null)
+            return api;
+        
         //BoxAPIConnection api = new BoxAPIConnection("TzEyYLq9eiERs8KfPIXouWWx1JO2oQWy");
         String privString = String.format("%s/.ssh/%s", System.getProperty("user.home"), PRIVATE_KEY_FILE);
 
@@ -41,12 +45,11 @@ public class BoxAuthentication {
             PieLogger.error(this.getClass(), "Error", ex);
         }
 
-         JWTEncryptionPreferences encryptionPref = new JWTEncryptionPreferences();
+        JWTEncryptionPreferences encryptionPref = new JWTEncryptionPreferences();
         encryptionPref.setPublicKeyID(PUBLIC_KEY_ID);
         encryptionPref.setPrivateKey(privateKey);
         encryptionPref.setPrivateKeyPassword(PRIVATE_KEY_PASSWORD);
         encryptionPref.setEncryptionAlgorithm(EncryptionAlgorithm.RSA_SHA_256);
-
 
         BoxDeveloperEditionAPIConnection api = BoxDeveloperEditionAPIConnection.getAppUserConnection(USER_ID, CLIENT_ID,
                 CLIENT_SECRET, encryptionPref);
