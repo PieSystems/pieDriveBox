@@ -125,10 +125,4 @@ public class BoxAdapter implements Adaptor {
         //ToDo: Think about ... maybe an exception
         return null;
     }
-
-	@Override
-	public boolean authenticate() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
-
 }
