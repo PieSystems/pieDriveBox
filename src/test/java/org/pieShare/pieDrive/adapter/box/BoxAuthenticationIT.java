@@ -14,9 +14,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import junit.framework.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.pieShare.pieDrive.adapter.box.configuration.BoxAdapterConfig;
@@ -36,6 +35,14 @@ public class BoxAuthenticationIT {
 
     @Autowired
     private BoxAdapter boxAdapter;
+    @Autowired
+    private BoxAuthentication boxAuthentication;
+
+    @Before
+    public void init()
+    {
+        boxAuthentication.authenticateWithDeveloperToken("0pcQlMYpcUQmsc2Hw017Ski6Sct2VP0O");
+    }
     
     public BoxAuthenticationIT() {
     }
@@ -100,7 +107,7 @@ public class BoxAuthenticationIT {
         }
 
         Arrays.equals(content, data1);
-        
+
         donwloadedFile.delete();
         testFile.delete();
 
@@ -110,7 +117,7 @@ public class BoxAuthenticationIT {
         try {
             boxAdapter.delete(file);
         } catch (AdaptorException ex) {
-           Assert.fail();
+            Assert.fail();
         }
 
         BoxFile boxFile2 = boxAdapter.findFileByName(file.getUuid());
