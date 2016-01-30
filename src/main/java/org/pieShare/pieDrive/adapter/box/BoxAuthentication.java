@@ -63,7 +63,7 @@ public class BoxAuthentication {
     
     public String getURI()
     {
-        return "https://app.box.com/api/oauth2/authorize?response_type=code&client_id=bryxc5clldhd2q8d7gns5vo0iha4prx5&redirect_uri=https://127.0.0.1&state=security_token%3DKnhMJatFipTAnM0nHlZA";
+        return "https://app.box.com/api/oauth2/authorize?response_type=code&client_id=bryxc5clldhd2q8d7gns5vo0iha4prx5&redirect_uri=https://127.0.0.1:8080/token&state=security_token%3DKnhMJatFipTAnM0nHlZA";
     }
 
 }
