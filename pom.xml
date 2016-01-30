@@ -20,8 +20,8 @@
             <artifactId>box-java-sdk</artifactId>
             <version>1.1.0</version>
             <!--<scope>system</scope>
-            <systemPath>${project.basedir}/libs/box-java-sdk-1.2.0-SNAPSHOT.jar</systemPath>
-             <systemPath>${project.basedir}/libs/box-java-sdk-all-1.2.0-SNAPSHOT.jar</systemPath>-->
+           <systemPath>${project.basedir}/libs/box-java-sdk-1.2.0-SNAPSHOT.jar</systemPath>
+            <systemPath>${project.basedir}/libs/box-java-sdk-all-1.2.0-SNAPSHOT.jar</systemPath>-->
         </dependency>
         
         <dependency>
@@ -66,4 +66,21 @@
         </dependency>
     </dependencies>
     
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.19.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

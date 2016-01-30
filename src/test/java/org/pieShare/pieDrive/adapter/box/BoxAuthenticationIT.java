@@ -32,12 +32,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 //@RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(classes = BoxAdapterConfig.class)
-public class BoxAuthenticationTest {
+public class BoxAuthenticationIT {
 
     @Autowired
     private BoxAdapter boxAdapter;
     
-    public BoxAuthenticationTest() {
+    public BoxAuthenticationIT() {
     }
 
 	//@Test
