@@ -120,5 +120,4 @@ public class BoxAdapter implements Adaptor {
         //ToDo: Think about ... maybe an exception
         return null;
     }
-
 }
